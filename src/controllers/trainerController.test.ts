@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as trainerService from "../services/trainerService";
 import * as trainerController from "../controllers/trainerController";
-import { createHttpError } from "../utils/httpError";
+import HttpError from "../utils/httpError";
 
 jest.mock("../services/trainerService");
 const mockedService = trainerService as jest.Mocked<typeof trainerService>;
@@ -139,7 +139,7 @@ describe("trainerController", () => {
     });
 
     test("should return status 404 if trainer does not exist", async () => {
-      const error = createHttpError(404, "Dresseur non trouvé");
+      const error = new HttpError("Dresseur non trouvé", 404);
       mockedService.getTrainerTeam.mockRejectedValue(error);
       const req = mockRequest({ params: { id: "inexistant" } });
       const res = mockResponse();

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as pokemonService from "../services/pokemonService";
 import * as pokemonController from "../controllers/pokemonController";
-import { createHttpError } from "../utils/httpError";
+import HttpError from "../utils/httpError";
 
 jest.mock("../services/pokemonService");
 const mockedService = pokemonService as jest.Mocked<typeof pokemonService>;
@@ -145,9 +145,9 @@ describe("pokemonController", () => {
       expect(res.json).not.toHaveBeenCalled();
     });
     test("should return status 404 if invalid trainerId was passed", async () => {
-      const error = createHttpError(
-        404,
+      const error = new HttpError(
         "Le dresseur correspondant à cet ID n'existe pas",
+        404,
       );
       mockedService.createPokemon.mockRejectedValue(error);
 
@@ -160,9 +160,9 @@ describe("pokemonController", () => {
       expect(res.json).not.toHaveBeenCalled();
     });
     test("should return status 409 if trainer has too many pokemons in team", async () => {
-      const error = createHttpError(
-        409,
+      const error = new HttpError(
         "Un dresseur peut avoir un maximum de 6 pokémons. Limite atteinte.",
+        409,
       );
       mockedService.createPokemon.mockRejectedValue(error);
 

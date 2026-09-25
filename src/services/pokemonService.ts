@@ -1,7 +1,7 @@
 import { TObjectId } from "../constants";
 import Pokemon, { TPokemonDocument } from "../models/Pokemon";
 import Trainer from "../models/Trainer";
-import { createHttpError } from "../utils/httpError";
+import HttpError from "../utils/httpError";
 import { TPokemon, TPokemonFilters } from "../validations/pokemonSchemas";
 
 export const getAllPokemons = async (
@@ -31,17 +31,14 @@ export const createPokemon = async (
 
   const trainer = await Trainer.findById(trainerId);
   if (!trainer) {
-    throw createHttpError(
-      404,
-      "Le dresseur correspondant à cet ID n'existe pas",
-    );
+    throw new HttpError("Le dresseur correspondant à cet ID n'existe pas", 404);
   }
   const team = await Pokemon.find({ trainerId });
 
   if (team.length > 5) {
-    throw createHttpError(
-      409,
+    throw new HttpError(
       "Un dresseur peut avoir un maximum de 6 pokémons. Limite atteinte.",
+      409,
     );
   }
   return await Pokemon.create(data);

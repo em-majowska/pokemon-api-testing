@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import * as pokemonService from "../services/pokemonService";
-import { createHttpError } from "../utils/httpError";
+import HttpError from "../utils/httpError";
 import { PokemonType, TObjectId } from "../constants";
 import { TPokemon } from "../validations/pokemonSchemas";
 
@@ -25,7 +25,7 @@ export const getPokemonById = async (
   try {
     const pokemon = await pokemonService.getPokemonById(req.params.id);
     if (!pokemon) {
-      throw createHttpError(404, "Pokémon non trouvé");
+      throw new HttpError("Pokémon non trouvé", 404);
     }
     res.status(200).json(pokemon);
   } catch (error) {
@@ -54,7 +54,7 @@ export const updatePokemon = async (
   try {
     const pokemon = await pokemonService.updatePokemon(req.params.id, req.body);
     if (!pokemon) {
-      throw createHttpError(404, "Pokémon non trouvé");
+      throw new HttpError("Pokémon non trouvé", 404);
     }
     res.status(200).json(pokemon);
   } catch (error) {
@@ -70,7 +70,7 @@ export const deletePokemon = async (
   try {
     const pokemon = await pokemonService.deletePokemon(req.params.id);
     if (!pokemon) {
-      throw createHttpError(404, "Pokémon non trouvé");
+      throw new HttpError("Pokémon non trouvé", 404);
     }
     res.status(204).json(pokemon);
   } catch (error) {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as trainerService from "../services/trainerService";
 import { TTrainer } from "../validations/trainerSchemas";
-import { createHttpError } from "../utils/httpError";
+import HttpError from "../utils/httpError";
 import { TObjectId } from "../constants";
 
 export const getAllTrainers = async (
@@ -25,7 +25,7 @@ export const getTrainerById = async (
   try {
     const trainer = await trainerService.getTrainerById(req.params.id);
     if (!trainer) {
-      throw createHttpError(404, "Dresseur non trouvé");
+      throw new HttpError("Dresseur non trouvé", 404);
     }
     res.status(200).json(trainer);
   } catch (error) {
@@ -68,7 +68,7 @@ export const updateTrainer = async (
   try {
     const trainer = await trainerService.updateTrainer(req.params.id, req.body);
     if (!trainer) {
-      throw createHttpError(404, "Dresseur non trouvé");
+      throw new HttpError("Dresseur non trouvé", 404);
     }
     res.status(200).json(trainer);
   } catch (error) {
@@ -84,7 +84,7 @@ export const deleteTrainer = async (
   try {
     const trainer = await trainerService.deleteTrainer(req.params.id);
     if (!trainer) {
-      throw createHttpError(404, "Dresseur non trouvé");
+      throw new HttpError("Dresseur non trouvé", 404);
     }
     res.status(204).json(trainer);
   } catch (error) {

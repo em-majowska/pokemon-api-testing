@@ -1,7 +1,7 @@
 import Pokemon, { TPokemonDocument } from "../models/Pokemon";
 import Trainer, { TTrainerDocument } from "../models/Trainer";
 import { TTrainer, TTrainerTeam } from "../validations/trainerSchemas";
-import { createHttpError } from "../utils/httpError";
+import HttpError from "../utils/httpError";
 import { getAverageLevel } from "../utils/pokemonUtils";
 import { TObjectId } from "../constants";
 
@@ -18,7 +18,7 @@ export const getTrainerById = async (
 export const getTrainerTeam = async (id: TObjectId): Promise<TTrainerTeam> => {
   const trainer = await Trainer.findById(id);
   if (!trainer) {
-    throw createHttpError(404, "Dresseur non trouvé");
+    throw new HttpError("Dresseur non trouvé", 404);
   }
 
   const pokemons = await Pokemon.find({ trainerId: id });
@@ -52,9 +52,9 @@ export const deleteTrainer = async (
 ): Promise<TTrainerDocument | null> => {
   const hasPokemons = await Pokemon.exists({ trainerId: id });
   if (hasPokemons) {
-    throw createHttpError(
-      409,
+    throw new HttpError(
       "Impossible de supprimer un dresseur qui a des pokémons dans son équipe",
+      409,
     );
   }
   return await Trainer.findByIdAndDelete(id);
