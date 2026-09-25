@@ -1,27 +1,49 @@
 import z from "zod";
-import { REGIONS } from "../constants";
+import { objectId, REGIONS } from "../constants";
+import { TPokemonDocument } from "../models/Pokemon";
 
 export const trainerBodySchema = z.object({
   name: z
     .string()
     .trim()
-    .min(3, "Name is too short (at least 3 characters)")
-    .max(20, "Name should be between 3-20 characters long"),
+    .min(3, "Le nom est trop court (au moins 3 caractères)")
+    .max(20, "Le nom doit contenir entre 3 et 20 caractères"),
   age: z
     .number()
     .int()
-    .min(10, "Trainer should be at least 10 years old")
-    .max(99, "Trainer is too old (max 99) 😜"),
-  region: z.enum(
-    REGIONS,
-    "Region should be one of : Kanto, Johto, Hoenn, Sinnoh",
-  ),
+    .min(10, "Dresseur doit avoir au moins 10 ans")
+    .max(99, "Dresseur est trop âgé (99 ans maximum)"),
+  region: z.enum(REGIONS, {
+    message:
+      "La région doit être l'une des suivantes : Kanto, Johto, Hoenn, Sinnoh",
+  }),
   badges: z
     .number()
     .int()
-    .min(0, "Trainer cannot have negative number of badges")
-    .max(8, "Trainer cannot have more than 8 badges")
+    .min(0, "Un dresseur ne peut pas avoir un nombre négatif de badges")
+    .max(8, "Un dresseur ne peut pas avoir plus de 8 badges")
+    .optional()
     .default(0),
 });
+
+export const createTrainerSchema = z.object({
+  body: trainerBodySchema,
+});
+
+export const getTrainerSchema = z.object({
+  params: z.object({ id: objectId }),
+});
+
+export const updateTrainerSchema = z.object({
+  params: z.object({ id: objectId }),
+  body: trainerBodySchema.partial(),
+});
+
+export type TTrainerTeam = {
+  trainer: string;
+  count: number;
+  averageLevel: number;
+  pokemons: TPokemonDocument[];
+};
 
 export type TTrainer = z.infer<typeof trainerBodySchema>;

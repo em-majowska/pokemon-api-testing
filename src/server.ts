@@ -1,12 +1,14 @@
 import express from "express";
+import trainerRouter from "./routes/trainerRoutes";
+import pokemonRouter from "./routes/pokemonRoutes";
+import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 app.use(express.json());
 
-// TODO routes
-// app.use();
+app.use("/api/trainers", trainerRouter);
+app.use("/api/pokemons", pokemonRouter);
 
-// TODO errorHandler
-// app.use(errorHandler);
+app.use(errorHandler);
 
 export default app;

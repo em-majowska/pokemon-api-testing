@@ -2,7 +2,7 @@ import mongoose, { Document, model, Schema } from "mongoose";
 import { POKEMON_TYPES } from "../constants";
 import { TPokemon } from "../validations/pokemonSchemas";
 
-type TPokemonDocument = TPokemon & Document;
+export type TPokemonDocument = TPokemon & Document;
 
 const pokemonSchema = new Schema<TPokemonDocument>(
   {
