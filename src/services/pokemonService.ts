@@ -38,7 +38,7 @@ export const createPokemon = async (
   }
   const team = await Pokemon.find({ trainerId });
 
-  if (team.length === 6) {
+  if (team.length > 5) {
     throw createHttpError(
       409,
       "Un dresseur peut avoir un maximum de 6 pokémons. Limite atteinte.",

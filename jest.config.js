@@ -7,4 +7,5 @@ module.exports = {
   moduleFileExtensions: ["ts", "js", "json"],
   testMatch: ["**/*.test.ts"],
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+  setupFilesAfterEnv: ["./src/tests/setup.ts"],
 };

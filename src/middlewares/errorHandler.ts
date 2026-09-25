@@ -40,7 +40,7 @@ const errorHandler = (
   }
 
   if (error.statusCode) {
-    return res.status(400).json({
+    return res.status(error.statusCode).json({
       message: error.message,
       statusCode: error.statusCode,
     });
