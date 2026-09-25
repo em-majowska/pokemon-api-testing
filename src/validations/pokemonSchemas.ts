@@ -34,7 +34,7 @@ export const getPokemonSchema = z.object({
 
 export const updatePokemonSchema = z.object({
   params: z.object({ id: objectId }),
-  body: createPokemonSchema.partial(),
+  body: pokemonBodySchema.partial(),
 });
 
 export type TPokemon = z.infer<typeof pokemonBodySchema>;

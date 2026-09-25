@@ -150,6 +150,16 @@ describe("trainerService", () => {
       expect(MockedPokemon.find).toHaveBeenCalledWith({ trainerId: "abc123" });
       expect(res).toEqual(fakeData);
     });
+    test("should return error if trainer ID is invalid", async () => {
+      (MockedTrainer.findById as jest.Mock).mockResolvedValue(null);
+
+      await expect(trainerService.getTrainerTeam("fakeId")).rejects.toThrow(
+        "Dresseur non trouvé",
+      );
+      expect(MockedTrainer.findById).toHaveBeenCalledTimes(1);
+      expect(MockedTrainer.findById).toHaveBeenCalledWith("fakeId");
+      expect(MockedPokemon.find).not.toHaveBeenCalled();
+    });
   });
 
   // ====================================================
